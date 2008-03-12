@@ -49,7 +49,7 @@
 
 typedef struct {
     CARD8   reqType;
-    CARD8   randrReqType;
+    CARD8   dri2ReqType;
     CARD16  length B16;
     CARD32  majorVersion B32;
     CARD32  minorVersion B32;

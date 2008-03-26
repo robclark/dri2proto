@@ -33,19 +33,20 @@
 #ifndef _DRI2_PROTO_H_
 #define _DRI2_PROTO_H_
 
-#define DRI2_NAME		"DRI2"
-#define DRI2_MAJOR		1
-#define DRI2_MINOR		0
+#define DRI2_NAME			"DRI2"
+#define DRI2_MAJOR			1
+#define DRI2_MINOR			0
 
-#define DRI2NumberErrors	0
-#define DRI2NumberEvents	0
-#define DRI2NumberRequests	6
+#define DRI2NumberErrors		0
+#define DRI2NumberEvents		0
+#define DRI2NumberRequests		6
 
-#define X_DRI2QueryVersion	0
-#define X_DRI2Connect		1
-#define X_DRI2AuthConnection	2
-#define X_DRI2CreateDrawable	3
-#define X_DRI2DestroyDrawable	4
+#define X_DRI2QueryVersion		0
+#define X_DRI2Connect			1
+#define X_DRI2AuthConnection		2
+#define X_DRI2CreateDrawable		3
+#define X_DRI2DestroyDrawable		4
+#define X_DRI2ReemitDrawableInfo	5
 
 typedef struct {
     CARD8   reqType;
@@ -119,17 +120,16 @@ typedef struct {
     CARD8   reqType;
     CARD8   dri2ReqType;
     CARD16  length B16;
-    CARD32  screen B32;
     CARD32  drawable B32;
 } xDRI2CreateDrawableReq;
-#define sz_xDRI2CreateDrawableReq   12
+#define sz_xDRI2CreateDrawableReq	8
 
 typedef struct {
     BYTE    type;   /* X_Reply */
     BYTE    pad1;
     CARD16  sequenceNumber B16;
     CARD32  length B32;
-    CARD32  drmDrawable B32;
+    CARD32  handle B32;
     CARD32  head B32;
     CARD32  pad2 B32;
     CARD32  pad3 B32;
@@ -142,9 +142,30 @@ typedef struct {
     CARD8   reqType;
     CARD8   dri2ReqType;
     CARD16  length B16;
-    CARD32  screen B32;
     CARD32  drawable B32;
 } xDRI2DestroyDrawableReq;
-#define sz_xDRI2DestroyDrawableReq   12
+#define sz_xDRI2DestroyDrawableReq	8
+
+typedef struct {
+    CARD8   reqType;
+    CARD8   dri2ReqType;
+    CARD16  length B16;
+    CARD32  drawable B32;
+} xDRI2ReemitDrawableInfoReq;
+#define sz_xDRI2ReemitDrawableInfoReq   8
+
+typedef struct {
+    BYTE    type;   /* X_Reply */
+    BYTE    pad1;
+    CARD16  sequenceNumber B16;
+    CARD32  length B32;
+    CARD32  head B32;
+    CARD32  pad2 B32;
+    CARD32  pad3 B32;
+    CARD32  pad4 B32;
+    CARD32  pad5 B32;
+    CARD32  pad6 B32;
+} xDRI2ReemitDrawableInfoReply;
+#define sz_xDRI2ReemitDrawableInfoReply	32
 
 #endif

@@ -6,4 +6,4 @@ includedir=@includedir@
 Name: DRI2Proto
 Description: DRI2 extension headers
 Version: @PACKAGE_VERSION@
-Cflags: -I${includedir}/X11/extensions
+Cflags: -I${includedir}

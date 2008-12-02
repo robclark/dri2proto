@@ -173,21 +173,20 @@ typedef struct {
     CARD32  region B32;
     CARD32  dest B32;
     CARD32  src B32;
-    CARD32  bitmask B32;
 } xDRI2CopyRegionReq;
-#define sz_xDRI2CopyRegionReq   24
+#define sz_xDRI2CopyRegionReq   20
 
 typedef struct {
     BYTE    type;   /* X_Reply */
     BYTE    pad1;
     CARD16  sequenceNumber B16;
     CARD32  length B32;
-    CARD32  bitmask B32;
     CARD32  pad2 B32;
     CARD32  pad3 B32;
     CARD32  pad4 B32;
     CARD32  pad5 B32;
     CARD32  pad6 B32;
+    CARD32  pad7 B32;
 } xDRI2CopyRegionReply;
 #define sz_xDRI2CopyRegionReply	32
 

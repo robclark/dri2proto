@@ -269,22 +269,16 @@ The name of this extension is "DRI2".
 	region: REGION
 	source: DRI2ATTACHMENT
 	destination: DRI2ATTACHMENT
-	value-mask: CARD32
-	value-list: LISTofVALUE
       ▶	
-	value-mask: CARD32
-	value-list: LISTofVALUE
 └───
 	Errors: Window, Value
 
 	Schedule a copy from one DRI2 buffer to another.
 
-	The value-mask and value-list specify optional attributes of
-	the copy operation.  This initial revision of the DRI2
-	protocol doesn't specify any optional attributes, but it is
-	anticipated that buffer flips and various types of vertical
-	retrace synchronization will require extra arguments to be
-	provided and returned.
+	The DRICopyRegion request has a reply but it is empty.  The
+	reply is there to let the direct rendering client wait until
+	the server has seen the request before proceeding with
+	rendering the next frame.
 
 
 			     ⚙ ⚙ ⚙  ⚙ ⚙ ⚙
@@ -308,6 +302,9 @@ The DRI2 extension has undergone a number of revisions before
 		CreateDrawable and DestroyDrawable, update Connect to
 		support different driver types and to send the
 		authentication group.
+
+	1.99.3: Drop the bitmask argument intended to indicate
+		presence of optional arguments for CopyRegion.
 
 	2.0: Awesomeness!
 
@@ -469,25 +466,13 @@ A.2 Protocol Requests
 	4	REGION			region
 	4	DRI2ATTACHMENT		source
 	4	DRI2ATTACHMENT		destination
-	4	BITMASK			value-mask (has n bits set to 1)
-		no bits specified, must be 0
       ▶	
 	1	1			Reply
         1				unused
 	2	CARD16			sequence number
 	4	0			reply length
-	4	BITMASK			value-mask (has n bits set to 1)
-		no bits specified, must be 0
-	20				unused	
+	24				unused	
 └───
-
-	With BITMASK and LISTofVALUE defined as in the X11 protocol
-	encoding document.  Specifically, the most significant bit of
-	value-mask is reserved to allow for chained bitmasks.  The
-	sizes of the individual values depend on the values, but is
-	known.  In case of differing DRI2 versions on client and
-	server, either side must not send values the other side does
-	not know about.
 
 
 A.3 Protocol Events

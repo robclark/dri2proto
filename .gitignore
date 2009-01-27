@@ -1,0 +1,14 @@
+Makefile
+Makefile.in
+aclocal.m4
+dri2proto.pc
+autom4te.cache
+config.log
+config.status
+configure
+install-sh
+missing
+*~
+dri2proto-*.tar.*
+ChangeLog
+tags

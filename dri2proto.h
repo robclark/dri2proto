@@ -200,18 +200,4 @@ typedef struct {
 } xDRI2SwapBuffersReq;
 #define sz_xDRI2SwapBuffersReq   8
 
-typedef struct {
-    BYTE    type;   /* X_Reply */
-    BYTE    pad1;
-    CARD16  sequenceNumber B16;
-    CARD32  length B32;
-    CARD32  count B32;
-    CARD32  pad3 B32;
-    CARD32  pad4 B32;
-    CARD32  pad5 B32;
-    CARD32  pad6 B32;
-    CARD32  pad7 B32;
-} xDRI2SwapBuffersReply;
-#define sz_xDRI2SwapBuffersReply	32
-
 #endif

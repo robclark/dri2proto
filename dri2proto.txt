@@ -304,10 +304,10 @@ The name of this extension is "DRI2".
 	Schedule a swap of the front and back buffers with the display
 	server.
 
-	In reply, the display server is expected to provide new front
-	and back buffers to the client following this request.  The
-	display server should process this request asynchronously
-	if possible, to prevent the client from blocking.
+	This request has no reply.  The server is expected to either perform
+	a buffer exchange or queue one before returning.  The client should
+	invalidate its render buffers after sending this request, causing
+	a subsequent GetBuffers request to get updated buffer info.
 
 ┌───
     DRI2GetBuffersWithFormat

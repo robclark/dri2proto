@@ -110,6 +110,17 @@ of the front and back buffers.  If the display server supports it, this
 operation may be preferred, since it may be easier and/or more performant
 for the server to perform a simple buffer swap rather than a blit.
 
+2.6 Synchronizing rendering
+
+DRI2 provides several methods for synchronizing drawing with various events.
+The protocol for these methods is based on the SGI_video_sync and
+OML_sync_control GLX extensions.  Using the DRI2WaitMSC request, a client
+can wait for a specific frame count or divisor/remainder before continuing
+its processing.  With the DRI2WaitSBC request, clients can block until a given
+swap count is reached (as incremented by DRI2SwapBuffers).  Finally, using
+DRI2SwapBuffers, clients can limit their frame rate by specifying a swap
+interval using the swap interval call (currently only available through GLX)
+or by using the OML swap buffers routine.
 
 			     ⚙ ⚙ ⚙  ⚙ ⚙ ⚙
 
@@ -297,17 +308,22 @@ The name of this extension is "DRI2".
     DRI2SwapBuffers
 	drawable: DRAWABLE
       ▶	
-	buffers: LISTofDRI2BUFFER
+	count: two CARD32s
 └───
 	Errors: Window
 
 	Schedule a swap of the front and back buffers with the display
 	server.
 
-	This request has no reply.  The server is expected to either perform
-	a buffer exchange or queue one before returning.  The client should
-	invalidate its render buffers after sending this request, causing
-	a subsequent GetBuffers request to get updated buffer info.
+	Returns the swap count value when the swap will actually occur (e.g.
+	the last queued swap count + (pending swap count * swap interval)).
+
+	The client should invalidate its render buffers after sending this
+	request, causing a subsequent GetBuffers request to get updated buffer
+	info.
+
+	This request is only available with protocol version 1.2 or
+	later.
 
 ┌───
     DRI2GetBuffersWithFormat
@@ -332,6 +348,68 @@ The name of this extension is "DRI2".
 	attachment points.
 
 	This request is only available with protocol version 1.1 or
+	later.
+
+┌───
+    DRI2GetMSC
+	drawable: DRAWABLE
+      ▶
+	ust, msc, sbc: CARD64
+└───
+	Errors: Window
+
+	Get the current media stamp counter (MSC) and swap buffer count (SBC)
+	along with the unadjusted system time (UST) when the MSC was last
+	incremented.
+
+	This request is only available with protocol version 1.2 or
+	later.
+
+┌───
+    DRI2WaitMSC
+	drawable: DRAWABLE
+	target_msc: two CARD32s
+	divisor: two CARD32s
+	remainder: two CARD32s
+      ▶
+	ust, msc, sbc: CARD64
+└───
+	Errors: Window
+
+	Blocks the client until either the frame count reaches target_msc or,
+	if the frame count is already greater than target_msc when the request
+	is received, until the frame count % divisor = remainder.  If divisor
+	is 0, the client will be unblocked if the frame count is greater than
+	or equal to the target_msc.
+
+	Returns the current media stamp counter (MSC) and swap buffer count
+	(SBC) along with the unadjusted system time (UST) when the MSC was last
+	incremented.
+
+	This request is only available with protocol version 1.2 or
+	later.
+
+┌───
+    DRI2WaitSBC
+	drawable: DRAWABLE
+	target_sbc: two CARD32s
+      ▶
+	ust, msc, sbc: CARD64
+└───
+	Errors: Window
+
+	Blocks the client until the swap buffer count reaches target_sbc.  If
+	the swap buffer count is already greater than or equal to target_sbc
+	when the request is recieved, this request will return immediately.
+
+	If target_sbc is 0, this request will block the client until all
+	previous DRI2SwapBuffers requests have completed.
+
+	Returns the current media stamp counter (MSC) and swap buffer count
+	(SBC) along with the unadjusted system time (UST) when the MSC was last
+	incremented.
+
+	This request is only available with protocol version 1.2 or
 	later.
 
 			     ⚙ ⚙ ⚙  ⚙ ⚙ ⚙
@@ -558,10 +636,6 @@ A.2 Protocol Requests
 	5n	LISTofDRI2BUFFER	buffers
 └───
 
-A.3 Protocol Events
-
-The DRI2 extension specifies no events.
-
 ┌───
     DRI2SwapBuffers
 	1	CARD8			major opcode
@@ -583,6 +657,96 @@ The DRI2 extension specifies no events.
 	5n	LISTofDRI2BUFFER	buffers
 └───
 
+┌───
+    DRI2SwapBuffers
+	1	CARD8			major opcode
+	1	7			DRI2 opcode
+	2	8			length
+	4	DRAWABLE		drawable
+	4	CARD32			target_msc_hi
+	4	CARD32			target_msc_lo
+	4	CARD32			divisor_hi
+	4	CARD32			divisor_lo
+	4	CARD32			remainder_hi
+	4	CARD32			remainder_lo
+      ▶	
+	1	1			Reply
+        1				unused
+	2	CARD16			sequence number
+	4	0			reply length
+	4	CARD32			swap_hi
+	4	CARD32			swap_lo
+	5n	LISTofDRI2BUFFER	buffers
+└───
+
+┌───
+    DRI2GetMSC
+	1	CARD8			major opcode
+	1	7			DRI2 opcode
+	2	8			length
+	4	DRAWABLE		drawable
+      ▶
+	1	1			Reply
+        1				unused
+	2	CARD16			sequence number
+	4	0			reply length
+	4	CARD32			ust_hi
+	4	CARD32			ust_lo
+	4	CARD32			msc_hi
+	4	CARD32			msc_lo
+	4	CARD32			sbc_hi
+	4	CARD32			sbc_lo
+└───
+
+┌───
+    DRI2WaitMSC
+	1	CARD8			major opcode
+	1	7			DRI2 opcode
+	2	8			length
+	4	DRAWABLE		drawable
+	4	CARD32			target_msc_hi
+	4	CARD32			target_msc_lo
+	4	CARD32			divisor_hi
+	4	CARD32			divisor_lo
+	4	CARD32			remainder_hi
+	4	CARD32			remainder_lo
+      ▶
+	1	1			Reply
+        1				unused
+	2	CARD16			sequence number
+	4	0			reply length
+	4	CARD32			ust_hi
+	4	CARD32			ust_lo
+	4	CARD32			msc_hi
+	4	CARD32			msc_lo
+	4	CARD32			sbc_hi
+	4	CARD32			sbc_lo
+└───
+
+┌───
+    DRI2WaitSBC
+	1	CARD8			major opcode
+	1	7			DRI2 opcode
+	2	8			length
+	4	DRAWABLE		drawable
+ 	4	CARD32			swap_hi
+	4	CARD32			swap_lo
+     ▶
+	1	1			Reply
+        1				unused
+	2	CARD16			sequence number
+	4	0			reply length
+	4	CARD32			ust_hi
+	4	CARD32			ust_lo
+	4	CARD32			msc_hi
+	4	CARD32			msc_lo
+	4	CARD32			sbc_hi
+	4	CARD32			sbc_lo
+└───
+
+A.3 Protocol Events
+
+The DRI2 extension specifies no events.
 
 A.4 Protocol Errors
 

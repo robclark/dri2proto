@@ -213,7 +213,7 @@ typedef struct {
     BYTE    type;   /* X_Reply */
     BYTE    pad1;
     CARD16  sequenceNumber B16;
-    CARD16  length B32;
+    CARD32  length B32;
     CARD32  swap_hi B32;
     CARD32  swap_lo B32;
 } xDRI2SwapBuffersReply;

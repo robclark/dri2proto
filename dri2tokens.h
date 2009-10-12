@@ -45,5 +45,6 @@
 #define DRI2BufferDepthStencil		9
 
 #define DRI2DriverDRI			0
+#define DRI2DriverVDPAU			1
 
 #endif

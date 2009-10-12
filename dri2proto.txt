@@ -128,7 +128,8 @@ No errrors defined by the DRI2 extension.
 
 5. Protocol Types
 
-DRI2DRIVER { DRI2DriverDRI }
+DRI2DRIVER { DRI2DriverDRI
+	     DRI2DriverVDPAU }
 
 	These values describe the type of driver the client will want
 	to load.  The server sends back the name of the driver to use
@@ -386,6 +387,7 @@ A.1 Common Types
 ┌───
     DRI2DRIVER
 	0x0	DRI2DriverDRI
+	0x1	DRI2DriverVDPAU
 └───
 
 ┌───

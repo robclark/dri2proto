@@ -35,7 +35,7 @@
 
 #define DRI2_NAME			"DRI2"
 #define DRI2_MAJOR			1
-#define DRI2_MINOR			1
+#define DRI2_MINOR			2
 
 #define DRI2NumberErrors		0
 #define DRI2NumberEvents		0

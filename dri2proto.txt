@@ -33,6 +33,7 @@ Keith Whitwell <keith@tungstengraphics.com>
 Jerome Glisse <glisse@freedesktop.org>
 Ian Romanick <ian.d.romanick@intel.com>
 Michel Dänzer <michel@tungstengraphics.com>
+Jesse Barnes <jbarnes@virtuousgeek.org>
 
 
 			     ⚙ ⚙ ⚙  ⚙ ⚙ ⚙
@@ -412,6 +413,18 @@ The name of this extension is "DRI2".
 	This request is only available with protocol version 1.2 or
 	later.
 
+┌───
+    DRI2SwapInterval
+	drawable: DRAWABLE
+	interval: CARD32
+      ▶
+└───
+	Errors: Window
+
+	Sets the swap interval for DRAWABLE.  This will throttle
+	DRI2SwapBuffers requests to swap at most once per interval frames,
+	which is useful useful for limiting the frame rate.
+
 			     ⚙ ⚙ ⚙  ⚙ ⚙ ⚙
 
 
@@ -742,6 +755,16 @@ A.2 Protocol Requests
 	4	CARD32			msc_lo
 	4	CARD32			sbc_hi
 	4	CARD32			sbc_lo
+└───
+
+┌───
+    DRI2SwapInterval
+	1	CARD8			major opcode
+	1	7			DRI2 opcode
+	2	8			length
+	4	DRAWABLE		drawable
+ 	4	CARD32			interval
+     ▶
 └───
 
 A.3 Protocol Events

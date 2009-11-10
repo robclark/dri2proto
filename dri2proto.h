@@ -53,6 +53,7 @@
 #define X_DRI2GetMSC			9
 #define X_DRI2WaitMSC			10
 #define X_DRI2WaitSBC			11
+#define X_DRI2SwapInterval		12
 
 typedef struct {
     CARD32  attachment B32;
@@ -264,5 +265,14 @@ typedef struct {
     CARD32  sbc_lo B32;
 } xDRI2MSCReply;
 #define sz_xDRI2MSCReply 32
+
+typedef struct {
+    CARD8   reqType;
+    CARD8   dri2ReqType;
+    CARD16  length B16;
+    CARD32  drawable B32;
+    CARD32  interval B32;
+} xDRI2SwapIntervalReq;
+#define sz_xDRI2SwapIntervalReq 12
 
 #endif

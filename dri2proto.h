@@ -217,8 +217,12 @@ typedef struct {
     CARD32  length B32;
     CARD32  swap_hi B32;
     CARD32  swap_lo B32;
+    CARD32  pad2 B32;
+    CARD32  pad3 B32;
+    CARD32  pad4 B32;
+    CARD32  pad5 B32;
 } xDRI2SwapBuffersReply;
-#define sz_xDRI2SwapBuffersReply 16
+#define sz_xDRI2SwapBuffersReply 32
 
 typedef struct {
     CARD8   reqType;

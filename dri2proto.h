@@ -38,8 +38,8 @@
 #define DRI2_MINOR			2
 
 #define DRI2NumberErrors		0
-#define DRI2NumberEvents		0
-#define DRI2NumberRequests		8
+#define DRI2NumberEvents		1
+#define DRI2NumberRequests		13
 
 #define X_DRI2QueryVersion		0
 #define X_DRI2Connect			1
@@ -54,6 +54,11 @@
 #define X_DRI2WaitMSC			10
 #define X_DRI2WaitSBC			11
 #define X_DRI2SwapInterval		12
+
+/*
+ * Events
+ */
+#define DRI2_BufferSwapComplete	0
 
 typedef struct {
     CARD32  attachment B32;
@@ -278,5 +283,20 @@ typedef struct {
     CARD32  interval B32;
 } xDRI2SwapIntervalReq;
 #define sz_xDRI2SwapIntervalReq 12
+
+typedef struct {
+    CARD8 type;
+    CARD8 pad;
+    CARD16 sequenceNumber B16;
+    CARD16 event_type B16;
+    CARD32 drawable B32;
+    CARD32 ust_hi B32;
+    CARD32 ust_lo B32;
+    CARD32 msc_hi B32;
+    CARD32 msc_lo B32;
+    CARD32 sbc_hi B32;
+    CARD32 sbc_lo B32;
+} xDRI2BufferSwapComplete;
+#define sz_xDRI2BufferSwapComplete 32
 
 #endif

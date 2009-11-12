@@ -123,6 +123,12 @@ DRI2SwapBuffers, clients can limit their frame rate by specifying a swap
 interval using the swap interval call (currently only available through GLX)
 or by using the OML swap buffers routine.
 
+2.7 Events
+
+DRI2 provides a single event to indicate when a DRI2SwapBuffers request has
+been completed.  This can be used to throttle drawing on the client side and
+tie into application main loops.
+
 			     ⚙ ⚙ ⚙  ⚙ ⚙ ⚙
 
 
@@ -142,8 +148,15 @@ No errrors defined by the DRI2 extension.
 
 			     ⚙ ⚙ ⚙  ⚙ ⚙ ⚙
 
+5. Events
 
-5. Protocol Types
+The only event provided by DRI2 is DRI2_BufferSwapComplete.
+
+
+			     ⚙ ⚙ ⚙  ⚙ ⚙ ⚙
+
+
+6. Protocol Types
 
 DRI2DRIVER { DRI2DriverDRI }
 
@@ -187,7 +200,7 @@ DRI2ATTACH_FORMAT { attachment: CARD32
 			     ⚙ ⚙ ⚙  ⚙ ⚙ ⚙
 
 
-6. Extension Initialization
+7. Extension Initialization
 
 The name of this extension is "DRI2".
 
@@ -218,7 +231,7 @@ The name of this extension is "DRI2".
 			     ⚙ ⚙ ⚙  ⚙ ⚙ ⚙
 
 
-7. Extension Requests
+8. Extension Requests
 
 ┌───
     DRI2Connect
@@ -427,8 +440,27 @@ The name of this extension is "DRI2".
 
 			     ⚙ ⚙ ⚙  ⚙ ⚙ ⚙
 
+9. Extension Requests
 
-8. Extension Versioning
+┌───
+    DRI2BufferSwapComplete
+      ▶
+      	event_type: CARD16
+	drawable: CARD32
+	ust: CARD64
+	msc: CARD64
+	sbc: CARD64
+└───
+
+	This event reports the status of the last DRI2SwapBuffers event to
+	the client.  The event type should be one of DRI2_EXCHANGE_COMPLETE,
+	indicating a successful buffer exchange, DRI2_BLIT_COMPLETE, indicating
+	the swap was performed with a blit, and DRI2_FLIP_COMPLETE, indicating
+	a full page flip was completed.
+
+			     ⚙ ⚙ ⚙  ⚙ ⚙ ⚙
+
+10. Extension Versioning
 
 The DRI2 extension has undergone a number of revisions before
 
@@ -452,30 +484,36 @@ The DRI2 extension has undergone a number of revisions before
 
 	2.0: Awesomeness!
 
+	2.1: True excellence.  Added DRI2GetBuffersWithFormat to allow
+             more flexible object creation.
+
+	2.2: Approaching perfection.  Added requests for swapbuffers,
+             MSC and SBC related requests, and events.
+
 Compatibility up to 2.0 is not preserved, but was also never released.
 
 
 			     ⚙ ⚙ ⚙  ⚙ ⚙ ⚙
 
 
-10. Relationship with other extensions
+11. Relationship with other extensions
 
 As an extension designed to support other extensions, there is
 naturally some interactions with other extensions.
 
 
-10.1 GLX
+11.1 GLX
 
 The GL auxilary buffers map directly to the DRI2 buffers... eh
 
 
-10.2 DBE
+11.2 DBE
 
 The DBE back buffer must correspond to the DRI2_BUFFER_FRONT_LEFT
 DRI2 buffer for servers that support both DBE and DRI2.
 
 
-10.3 XvMC / Xv
+11.3 XvMC / Xv
 
 We might add a DRI2_BUFFER_YUV to do vsynced colorspace conversion
 blits.  Maybe... not really sure.

@@ -46,4 +46,9 @@
 
 #define DRI2DriverDRI			0
 
+/* Event sub-types for the swap complete event */
+#define DRI2_EXCHANGE_COMPLETE		0x1
+#define DRI2_BLIT_COMPLETE		0x2
+#define DRI2_FLIP_COMPLETE		0x3
+
 #endif

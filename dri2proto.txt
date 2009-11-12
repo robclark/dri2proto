@@ -440,7 +440,7 @@ The name of this extension is "DRI2".
 
 			     ⚙ ⚙ ⚙  ⚙ ⚙ ⚙
 
-9. Extension Requests
+9. Extension Events
 
 ┌───
     DRI2BufferSwapComplete

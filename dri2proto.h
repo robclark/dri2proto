@@ -35,10 +35,10 @@
 
 #define DRI2_NAME			"DRI2"
 #define DRI2_MAJOR			1
-#define DRI2_MINOR			2
+#define DRI2_MINOR			3
 
 #define DRI2NumberErrors		0
-#define DRI2NumberEvents		1
+#define DRI2NumberEvents		2
 #define DRI2NumberRequests		13
 
 #define X_DRI2QueryVersion		0
@@ -59,6 +59,7 @@
  * Events
  */
 #define DRI2_BufferSwapComplete	0
+#define DRI2_InvalidateBuffers	1
 
 typedef struct {
     CARD32  attachment B32;
@@ -298,5 +299,19 @@ typedef struct {
     CARD32 sbc_lo B32;
 } xDRI2BufferSwapComplete;
 #define sz_xDRI2BufferSwapComplete 32
+
+typedef struct {
+    CARD8 type;
+    CARD8 pad;
+    CARD16 sequenceNumber B16;
+    CARD32 drawable B32;
+    CARD32 pad1 B32;
+    CARD32 pad2 B32;
+    CARD32 pad3 B32;
+    CARD32 pad4 B32;
+    CARD32 pad5 B32;
+    CARD32 pad6 B32;
+} xDRI2InvalidateBuffers;
+#define sz_xDRI2InvalidateBuffers 32
 
 #endif

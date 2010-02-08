@@ -125,9 +125,12 @@ or by using the OML swap buffers routine.
 
 2.7 Events
 
-DRI2 provides a single event to indicate when a DRI2SwapBuffers request has
-been completed.  This can be used to throttle drawing on the client side and
-tie into application main loops.
+DRI2 provides an event to indicate when a DRI2SwapBuffers request has
+been completed.  This can be used to throttle drawing on the client
+side and tie into application main loops.
+
+Another event is generated when the validity of the requested buffers
+changes.
 
 			     ⚙ ⚙ ⚙  ⚙ ⚙ ⚙
 
@@ -333,10 +336,6 @@ The name of this extension is "DRI2".
 	Returns the swap count value when the swap will actually occur (e.g.
 	the last queued swap count + (pending swap count * swap interval)).
 
-	The client should invalidate its render buffers after sending this
-	request, causing a subsequent GetBuffers request to get updated buffer
-	info.
-
 	This request is only available with protocol version 1.2 or
 	later.
 
@@ -459,6 +458,22 @@ The name of this extension is "DRI2".
 	the swap was performed with a blit, and DRI2_FLIP_COMPLETE, indicating
 	a full page flip was completed.
 
+┌───
+    DRI2InvalidateBuffers
+      ▶
+	drawable: CARD32
+└───
+
+	This event is generated when the buffers the client had
+	requested for 'drawable' (with DRI2GetBuffers or
+	DRI2GetBuffersWithFormat) become inappropriate because they
+	don't match the drawable dimensions anymore, or a buffer swap
+	has been performed.
+
+	Note that the server is only required to warn the client once
+	about this condition, until the client takes care of bringing
+	them back up-to-date with another GetBuffers request.
+
 			     ⚙ ⚙ ⚙  ⚙ ⚙ ⚙
 
 10. Extension Versioning
@@ -490,6 +505,8 @@ The DRI2 extension has undergone a number of revisions before
 
 	2.2: Approaching perfection.  Added requests for swapbuffers,
              MSC and SBC related requests, and events.
+
+	2.3: Added the DRI2InvalidateBuffers event.
 
 Compatibility up to 2.0 is not preserved, but was also never released.
 

@@ -146,7 +146,7 @@ version 2 is used in the CopyRegion request.
 
 4. Errors
 
-No errrors defined by the DRI2 extension.
+No errors are defined by the DRI2 extension.
 
 
 			     ⚙ ⚙ ⚙  ⚙ ⚙ ⚙
@@ -260,7 +260,7 @@ The name of this extension is "DRI2".
 
 	If the client is not local, or the request driver type is
 	unknown or not available, 'driver' and 'device' will be empty
-	strings, 'group' will be '0'.  We are not using an regular X
+	strings.  We are not using an regular X
 	error here to indicate failure, which will allow the client
 	fall back to other options more easily.
 

@@ -6,7 +6,6 @@ pkgconfig_DATA = dri2proto.pc
 
 dist_doc_DATA = dri2proto.txt
 
-EXTRA_DIST = dri2proto.pc.in
 
 MAINTAINERCLEANFILES = ChangeLog INSTALL
 

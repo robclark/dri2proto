@@ -618,20 +618,21 @@ A.2 Protocol Requests
     DRI2Connect
 	1	CARD8			major opcode
 	1	1			DRI2 opcode
-	2	3+(n+p)/4		length
+	2	3			length
 	4	WINDOW			window
 	4	CARD32			driver type
       ▶
 	1	1			Reply
         1				unused
 	2	CARD16			sequence number
-	4	(n+m+p)/4		reply length
+	4	(n+m+p+q)/4		reply length
 	4	n			driver name length
 	4	m			device name length
 	16				unused
 	n	CARD8			driver name
+	p				unused, p=pad(n)
 	m	CARD8			device name
-	p				unused, p=pad(n+m)
+	q				unused, q=pad(m)
 └───
 
 ┌───

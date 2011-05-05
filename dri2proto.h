@@ -290,13 +290,13 @@ typedef struct {
     CARD8 pad;
     CARD16 sequenceNumber B16;
     CARD16 event_type B16;
-    CARD16 pad2;
     CARD32 drawable B32;
     CARD32 ust_hi B32;
     CARD32 ust_lo B32;
     CARD32 msc_hi B32;
     CARD32 msc_lo B32;
-    CARD32 sbc B32;
+    CARD32 sbc_hi B32;
+    CARD32 sbc_lo B32;
 } xDRI2BufferSwapComplete;
 #define sz_xDRI2BufferSwapComplete 32
 

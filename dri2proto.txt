@@ -178,7 +178,8 @@ DRI2ATTACHMENT { DRI2BufferFrontLeft
 	       	 DRI2BufferAccum
 		 DRI2BufferFakeFrontLeft
 		 DRI2BufferFakeFrontRight
-		 DRI2BufferDepthStencil }
+		 DRI2BufferDepthStencil
+		 DRI2BufferHiz }
 
 	These values describe various attachment points for DRI2
 	buffers.
@@ -509,6 +510,8 @@ The DRI2 extension has undergone a number of revisions before
 
 	2.3: Added the DRI2InvalidateBuffers event.
 
+	2.6: Enlightenment attained.  Added the DRI2BufferHiz attachment.
+
 Compatibility up to 2.0 is not preserved, but was also never released.
 
 
@@ -569,6 +572,7 @@ A.1 Common Types
 	0x7	DRI2BufferFakeFrontLeft
 	0x8	DRI2BufferFakeFrontRight
 	0x9	DRI2BufferDepthStencil
+	0xa	DRI2BufferHiz
 └───
 	Used to encode the possible attachment points.  The attachment
 	DRI2BufferDepthStencil is only available with protocol version 1.1 or

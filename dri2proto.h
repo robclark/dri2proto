@@ -35,7 +35,7 @@
 
 #define DRI2_NAME			"DRI2"
 #define DRI2_MAJOR			1
-#define DRI2_MINOR			3
+#define DRI2_MINOR			4
 
 #define DRI2NumberErrors		0
 #define DRI2NumberEvents		2
@@ -54,6 +54,11 @@
 #define X_DRI2WaitMSC			10
 #define X_DRI2WaitSBC			11
 #define X_DRI2SwapInterval		12
+#define X_DRI2GetBuffersVid		13
+#define X_DRI2SwapBuffersVid	14
+#define X_DRI2SetAttribute		15
+#define X_DRI2GetAttribute		16
+#define X_DRI2GetFormats		17
 
 /*
  * Events
@@ -164,6 +169,17 @@ typedef struct {
 #define sz_xDRI2GetBuffersReq   12
 
 typedef struct {
+    CARD8   reqType;
+    CARD8   dri2ReqType;
+    CARD16  length B16;
+    CARD32  drawable B32;
+    CARD32  width B32;
+    CARD32  height B32;
+    CARD32  count B32;
+} xDRI2GetBuffersVidReq;
+#define sz_xDRI2GetBuffersVidReq   20
+
+typedef struct {
     BYTE    type;   /* X_Reply */
     BYTE    pad1;
     CARD16  sequenceNumber B16;
@@ -215,6 +231,25 @@ typedef struct {
     CARD32  remainder_lo B32;
 } xDRI2SwapBuffersReq;
 #define sz_xDRI2SwapBuffersReq  32
+
+typedef struct {
+    CARD8   reqType;
+    CARD8   dri2ReqType;
+    CARD16  length B16;
+    CARD32  drawable B32;
+    CARD32  target_msc_hi B32;
+    CARD32  target_msc_lo B32;
+    CARD32  divisor_hi B32;
+    CARD32  divisor_lo B32;
+    CARD32  remainder_hi B32;
+    CARD32  remainder_lo B32;
+    CARD32  source B32;
+    CARD32  x1 B32;
+    CARD32  y1 B32;
+    CARD32  x2 B32;
+    CARD32  y2 B32;
+} xDRI2SwapBuffersVidReq;
+#define sz_xDRI2SwapBuffersVidReq  52
 
 typedef struct {
     BYTE    type;   /* X_Reply */
@@ -284,6 +319,60 @@ typedef struct {
     CARD32  interval B32;
 } xDRI2SwapIntervalReq;
 #define sz_xDRI2SwapIntervalReq 12
+
+typedef struct {
+    CARD8   reqType;
+    CARD8   dri2ReqType;
+    CARD16  length B16;
+    CARD32  drawable B32;
+    CARD32  attribute B32;
+} xDRI2SetAttributeReq;
+#define sz_xDRI2SetAttributeReq 12
+
+typedef struct {
+    CARD8   reqType;
+    CARD8   dri2ReqType;
+    CARD16  length B16;
+    CARD32  drawable B32;
+    CARD32  attribute B32;
+} xDRI2GetAttributeReq;
+#define sz_xDRI2GetAttributeReq 12
+
+typedef struct {
+    BYTE    type;   /* X_Reply */
+    BYTE    pad1;
+    CARD16  sequenceNumber B16;
+    CARD32  length B32;
+    CARD32  pad2 B32;
+    CARD32  pad3 B32;
+    CARD32  pad4 B32;
+    CARD32  pad5 B32;
+    CARD32  pad6 B32;
+    CARD32  pad7 B32;
+} xDRI2GetAttributeReply;
+#define sz_xDRI2GetAttributeReply 32
+
+typedef struct {
+    CARD8   reqType;
+    CARD8   dri2ReqType;
+    CARD16  length B16;
+    CARD32  drawable B32;
+} xDRI2GetFormatsReq;
+#define sz_xDRI2GetFormatsReq 8
+
+typedef struct {
+    BYTE    type;   /* X_Reply */
+    BYTE    pad1;
+    CARD16  sequenceNumber B16;
+    CARD32  length B32;
+    CARD32  pad2 B32;
+    CARD32  pad3 B32;
+    CARD32  pad4 B32;
+    CARD32  pad5 B32;
+    CARD32  pad6 B32;
+    CARD32  pad7 B32;
+} xDRI2GetFormatsReply;
+#define sz_xDRI2GetFormatsReply 32
 
 typedef struct {
     CARD8 type;

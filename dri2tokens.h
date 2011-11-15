@@ -47,6 +47,7 @@
 
 #define DRI2DriverDRI			0
 #define DRI2DriverVDPAU			1
+#define DRI2DriverXV			2
 
 /* Event sub-types for the swap complete event */
 #define DRI2_EXCHANGE_COMPLETE		0x1
